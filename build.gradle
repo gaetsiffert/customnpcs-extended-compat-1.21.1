@@ -4,6 +4,16 @@ plugins {
     id 'idea'
 }
 
+repositories {
+    maven {
+        name = 'CurseMaven'
+        url = 'https://cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
+}
+
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
@@ -16,6 +26,10 @@ base {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+dependencies {
+    runtimeOnly customnpcs_maven_version
+}
 
 neoForge {
     version = project.neo_version
