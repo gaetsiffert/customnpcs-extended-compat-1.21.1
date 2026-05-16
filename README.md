@@ -1,6 +1,8 @@
-# Example Mod
+# CustomNPCs Scoreboard Compat
 
-Minimal NeoForge 1.21.1 mod project, cleaned from the generated template to keep only a basic example entry point.
+NeoForge 1.21.1 compatibility mod for CustomNPCs scoreboard conditions.
+
+This project exists to patch the scoreboard sync issues observed with `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`, especially duplicate objective packets and null `Optional` handling during login and score updates.
 
 ## Requirements
 

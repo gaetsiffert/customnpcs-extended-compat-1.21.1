@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "fr.narrnouille.customnpcsscoreboardcompat.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "customnpcs.AvailabilityMixin",
+    "customnpcs.CustomNpcsMixin",
+    "customnpcs.ServerTickHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
