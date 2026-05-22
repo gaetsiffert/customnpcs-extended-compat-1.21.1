@@ -1,5 +1,6 @@
 package fr.narrnouille.customnpcsscoreboardcompat.mixin.customnpcs;
 
+import fr.narrnouille.customnpcsscoreboardcompat.mixin.minecraft.ServerScoreboardAccessor;
 import net.minecraft.server.ServerScoreboard;
 import net.minecraft.world.scores.Objective;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,6 +18,9 @@ public abstract class AvailabilityMixin {
                     target = "Lnet/minecraft/server/ServerScoreboard;startTrackingObjective(Lnet/minecraft/world/scores/Objective;)V"
             )
     )
-    private void customnpcsScoreboardCompat$skipImmediateObjectiveTracking(ServerScoreboard scoreboard, Objective objective) {
+    private void customnpcsScoreboardCompat$startTrackingObjectiveOnce(ServerScoreboard scoreboard, Objective objective) {
+        if (!((ServerScoreboardAccessor) scoreboard).customnpcsScoreboardCompat$getTrackedObjectives().contains(objective)) {
+            scoreboard.startTrackingObjective(objective);
+        }
     }
 }

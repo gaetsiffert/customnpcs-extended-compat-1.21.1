@@ -1,7 +1,7 @@
 package fr.narrnouille.customnpcsscoreboardcompat.mixin.customnpcs;
 
+import fr.narrnouille.customnpcsscoreboardcompat.ScoreboardObjectiveSync;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundSetObjectivePacket;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -20,10 +20,8 @@ public abstract class ServerTickHandlerMixin {
                     target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V"
             )
     )
-    private void customnpcsScoreboardCompat$skipLoginObjectiveSync(ServerGamePacketListenerImpl connection, Packet<?> packet) {
-        if (!(packet instanceof ClientboundSetObjectivePacket)) {
-            connection.send(packet);
-        }
+    private void customnpcsScoreboardCompat$syncLoginObjectiveSafely(ServerGamePacketListenerImpl connection, Packet<?> packet) {
+        ScoreboardObjectiveSync.sendOrStartTracking(connection, packet);
     }
 
     @Redirect(

@@ -2,7 +2,7 @@
 
 NeoForge 1.21.1 compatibility mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
 
-This mod fixes the scoreboard condition crashes observed with CustomNPCs when an NPC dialog or quest availability uses a scoreboard objective.
+This mod fixes the scoreboard condition crashes and client sync issues observed with CustomNPCs when NPC dialogs, dialog options, quests, or marks use scoreboard availability.
 
 ## Target
 
@@ -29,6 +29,7 @@ In practice, this made scoreboard conditions unsafe for dialogs and similar logi
 - command feedback error after:
   - `/scoreboard players set @s cnpc_test 2`
 - NPC availability still changing even when the command printed an error
+- marks or child dialog options not reappearing on the client after the scoreboard condition becomes true
 
 ## Reproduction
 
@@ -72,8 +73,8 @@ This mod only patches those three paths.
 
 It does the following:
 
-- suppresses the redundant objective sync triggered from `Availability.initScore`
-- suppresses redundant `ClientboundSetObjectivePacket` sends during CustomNPCs login sync
+- starts scoreboard objective tracking from `Availability.initScore` only when the objective is not already tracked
+- turns CustomNPCs manual objective sync into idempotent server tracking during login and score updates
 - replaces `Optional.of(...)` with `Optional.ofNullable(...)` in the two scoreboard sync paths that were crashing
 
 ## What This Compat Does Not Change
@@ -84,7 +85,7 @@ It does not:
 
 - create missing objectives for you
 - change how CustomNPCs compares scoreboard values
-- alter dialogs, quests, factions, scripting, AI, rendering, GUI, or any unrelated CustomNPCs system
+- alter dialog, quest, mark, faction, scripting, AI, rendering, GUI, or any unrelated CustomNPCs logic
 
 Scoreboard condition behavior remains:
 
@@ -98,7 +99,7 @@ This mod is also not a data migration. If you configure NPC dialogs or quests wi
 
 The patch is intentionally narrow.
 
-Only the three methods listed above are touched, and only around scoreboard packet sync and null handling. That keeps the blast radius small, but this is still a runtime patch on another mod, so the usual warning applies: if a future CustomNPCs build changes those internals, this compat may need to be updated.
+Only the three methods listed above are touched, and only around scoreboard objective tracking, scoreboard packet sync, and null handling. That keeps the blast radius small, but this is still a runtime patch on another mod, so the usual warning applies: if a future CustomNPCs build changes those internals, this compat may need to be updated.
 
 ## Installation
 
@@ -137,6 +138,8 @@ In short: if the compat is removed but the scoreboard-driven NPC setup remains, 
   - manual validation checklist for this compatibility patch
 - `docs/changelogs/CHANGELOG_1.0.0.md`
   - initial release notes
+- `docs/changelogs/CHANGELOG_1.0.1.md`
+  - current release notes
 
 ## Useful Commands
 

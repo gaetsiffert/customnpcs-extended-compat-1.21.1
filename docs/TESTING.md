@@ -30,7 +30,51 @@ This project is a compatibility patch, so the important checks are behavioral ra
 8. leave and rejoin the world
 9. confirm there is no crash and the world still loads
 
-### 2. Dedicated server without the client jar
+### 2. Client-side scoreboard refresh
+
+Use an existing `cnpc_test` objective or create it:
+
+```mcfunction
+/scoreboard objectives add cnpc_test dummy "CNPC Test"
+/scoreboard players set @s cnpc_test 0
+```
+
+#### Mark availability
+
+1. create or edit an NPC
+2. add a visible mark in `Advanced -> Marks`
+3. set the mark availability scoreboard condition to:
+   - objective: `cnpc_test`
+   - operator: `=`
+   - value: `1`
+4. save the NPC and confirm the mark is hidden while the score is `0`
+5. run:
+
+```mcfunction
+/scoreboard players set @s cnpc_test 1
+```
+
+6. confirm the mark reappears above the NPC
+
+#### Child dialog availability
+
+1. create a source dialog that opens from the NPC
+2. add a child dialog option from that source dialog
+3. set the child dialog availability scoreboard condition to:
+   - objective: `cnpc_test`
+   - operator: `=`
+   - value: `1`
+4. set the score to `0` and confirm the child option is hidden
+5. set the score to `1` and reopen the source dialog
+6. confirm the child option is visible again
+
+Expected result:
+
+- client-side mark availability updates after score changes
+- client-side child dialog options update after score changes
+- no duplicate objective crash
+
+### 3. Dedicated server without the client jar
 
 1. install CustomNPCs and this compat mod on the dedicated server
 2. do not install this compat mod on the client
@@ -43,7 +87,7 @@ Expected result:
 - scoreboard condition still works
 - no duplicate objective crash
 
-### 3. Missing objective behavior
+### 4. Missing objective behavior
 
 Create a scoreboard condition pointing to an objective that does not exist.
 
@@ -53,7 +97,7 @@ Expected result:
 - condition evaluates to `false`
 - NPC content guarded by that condition remains unavailable
 
-### 4. Removal regression check
+### 5. Removal regression check
 
 This is only relevant if you want to verify the documented limitation.
 

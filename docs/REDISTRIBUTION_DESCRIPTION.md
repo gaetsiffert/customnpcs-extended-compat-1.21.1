@@ -15,12 +15,14 @@ Without this compat mod, using scoreboards in CustomNPCs availability conditions
 This mod is meant for players, server owners, and modpacks that want to use scoreboards to drive:
 
 - NPC dialog availability
+- NPC dialog option availability
 - NPC quest availability
+- NPC mark availability
 - progression links with other mods or server systems
 
 ## What to expect
 
-With this mod installed, scoreboard-based CustomNPCs conditions should be stable again on the targeted version set.
+With this mod installed, scoreboard-based CustomNPCs conditions should be stable again on the targeted version set. This includes conditions that are evaluated client-side, such as marks above NPCs and child dialog options.
 
 This mod does not add new gameplay or new scoreboard features. It is only a compatibility fix.
 

@@ -5,7 +5,8 @@
   "mixins": [
     "customnpcs.AvailabilityMixin",
     "customnpcs.CustomNpcsMixin",
-    "customnpcs.ServerTickHandlerMixin"
+    "customnpcs.ServerTickHandlerMixin",
+    "minecraft.ServerScoreboardAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
