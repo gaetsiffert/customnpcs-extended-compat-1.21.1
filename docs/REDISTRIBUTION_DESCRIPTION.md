@@ -11,6 +11,8 @@ Without this compat mod, using scoreboards in CustomNPCs availability conditions
 - crashes when rejoining a world or server
 - join failures that may appear as `Invalid player data`
 - errors after changing a scoreboard value
+- NPC marks disappearing after reconnecting to a dedicated server
+- mark or child dialog scoreboard conditions not reacting after reconnect until edited again
 
 This mod is meant for players, server owners, and modpacks that want to use scoreboards to drive:
 
@@ -22,7 +24,7 @@ This mod is meant for players, server owners, and modpacks that want to use scor
 
 ## What to expect
 
-With this mod installed, scoreboard-based CustomNPCs conditions should be stable again on the targeted version set. This includes conditions that are evaluated client-side, such as marks above NPCs and child dialog options.
+With this mod installed, scoreboard-based CustomNPCs conditions should be stable again on the targeted version set. This includes conditions that are evaluated client-side, such as marks above NPCs and child dialog options. NPC marks are also saved and resynced correctly after reconnecting to a dedicated server.
 
 This mod does not add new gameplay or new scoreboard features. It is only a compatibility fix.
 
@@ -74,8 +76,9 @@ More detailed change notes and technical context are available on GitHub.
 - client-optional on dedicated servers
 - still required in singleplayer
 - focused on compatibility, not feature expansion
+- uses vanilla scoreboard packets and CustomNPCs packets only; no compat-specific client packet is required
 
 tested with :
 - Minecraft `1.21.1`
 - NeoForge `21.1.230`
-- `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`
+- `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230` (testing with another CustomNPCs version is at the user's own risk)

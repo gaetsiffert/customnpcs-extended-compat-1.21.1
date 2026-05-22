@@ -30,4 +30,24 @@ public final class ScoreboardObjectiveSync {
             scoreboard.startTrackingObjective(objective);
         }
     }
+
+    public static void sendLoginObjectiveState(ServerGamePacketListenerImpl connection, Packet<?> packet) {
+        if (!(packet instanceof ClientboundSetObjectivePacket objectivePacket)
+                || objectivePacket.getMethod() != ClientboundSetObjectivePacket.METHOD_ADD) {
+            connection.send(packet);
+            return;
+        }
+
+        ServerScoreboard scoreboard = (ServerScoreboard) connection.player.getScoreboard();
+        Objective objective = scoreboard.getObjective(objectivePacket.getObjectiveName());
+        if (objective == null) {
+            connection.send(packet);
+            return;
+        }
+
+        ((ServerScoreboardAccessor) scoreboard).customnpcsScoreboardCompat$getTrackedObjectives().add(objective);
+        // The client may already know this objective in singleplayer; remove first so the ADD is always safe.
+        connection.send(new ClientboundSetObjectivePacket(objective, ClientboundSetObjectivePacket.METHOD_REMOVE));
+        connection.send(packet);
+    }
 }

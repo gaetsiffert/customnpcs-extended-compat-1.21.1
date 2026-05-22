@@ -28,7 +28,7 @@ This project is a compatibility patch, so the important checks are behavioral ra
 
 7. confirm the dialog is no longer available
 8. leave and rejoin the world
-9. confirm there is no crash and the world still loads
+9. confirm there is no duplicate objective crash and the world still loads
 
 ### 2. Client-side scoreboard refresh
 
@@ -67,11 +67,15 @@ Use an existing `cnpc_test` objective or create it:
 4. set the score to `0` and confirm the child option is hidden
 5. set the score to `1` and reopen the source dialog
 6. confirm the child option is visible again
+7. disconnect and reconnect
+8. change the score between `0` and `1`
+9. confirm the child option updates without editing the condition again
 
 Expected result:
 
 - client-side mark availability updates after score changes
 - client-side child dialog options update after score changes
+- mark and child dialog availability still update after reconnecting
 - no duplicate objective crash
 
 ### 3. Dedicated server without the client jar
@@ -80,12 +84,25 @@ Expected result:
 2. do not install this compat mod on the client
 3. join the server
 4. repeat the scoreboard condition scenario
+5. create or edit an NPC
+6. add a visible mark in `Advanced -> Marks`
+7. save the NPC, disconnect, and reconnect
+8. confirm the mark is still visible above the NPC
+9. reopen the NPC editor and confirm the mark is still listed
+10. set the mark availability scoreboard condition to:
+    - objective: `cnpc_test`
+    - operator: `=`
+    - value: `1`
+11. save, disconnect, and reconnect again
+12. change the score between `0` and `1`
+13. confirm the mark updates without removing and re-adding the condition
 
 Expected result:
 
 - join succeeds
 - scoreboard condition still works
 - no duplicate objective crash
+- mark data is preserved and resynced after reconnecting
 
 ### 4. Missing objective behavior
 
@@ -119,6 +136,8 @@ This compat mod should only affect the following CustomNPCs scoreboard sync path
 - `Availability.initScore`
 - `ServerTickHandler.playerLogin`
 - `CustomNpcs.lambda$serverstart$2`
+- mark save handling in `SPacketMenuSave.handle`
+- mark data sync when an NPC starts being seen by a player or is opened in the editor
 
 Anything outside those paths is out of scope and should behave exactly as before.
 

@@ -21,7 +21,7 @@ public abstract class ServerTickHandlerMixin {
             )
     )
     private void customnpcsScoreboardCompat$syncLoginObjectiveSafely(ServerGamePacketListenerImpl connection, Packet<?> packet) {
-        ScoreboardObjectiveSync.sendOrStartTracking(connection, packet);
+        ScoreboardObjectiveSync.sendLoginObjectiveState(connection, packet);
     }
 
     @Redirect(

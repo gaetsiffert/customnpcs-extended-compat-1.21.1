@@ -28,6 +28,7 @@ base {
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
+    compileOnly customnpcs_maven_version
     runtimeOnly customnpcs_maven_version
 }
 

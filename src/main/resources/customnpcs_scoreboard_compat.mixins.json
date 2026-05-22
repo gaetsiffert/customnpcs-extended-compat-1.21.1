@@ -5,6 +5,9 @@
   "mixins": [
     "customnpcs.AvailabilityMixin",
     "customnpcs.CustomNpcsMixin",
+    "customnpcs.EntityNPCInterfaceMixin",
+    "customnpcs.NoppesUtilServerMixin",
+    "customnpcs.SPacketMenuSaveMixin",
     "customnpcs.ServerTickHandlerMixin",
     "minecraft.ServerScoreboardAccessor"
   ],
