@@ -12,6 +12,7 @@ public final class CustomNpcsScoreboardCompatMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CustomNpcsScoreboardCompatMod(IEventBus modEventBus, ModContainer modContainer) {
+        modEventBus.addListener(CnpcGeckoPayloadRegistration::register);
         LOGGER.debug("Loaded mod {}", MODID);
     }
 }

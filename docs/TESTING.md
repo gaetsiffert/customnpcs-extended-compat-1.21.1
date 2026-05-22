@@ -129,6 +129,31 @@ Expected result on the affected CustomNPCs build:
 
 This mod fixes runtime behavior while installed. It does not rewrite CustomNPCs data to make the upstream bug disappear permanently.
 
+### 6. Optional CNPC-Gecko-Addon animation sync
+
+This is only relevant when CNPC-Gecko-Addon is installed.
+
+1. create or open an NPC using a Gecko model with an animation named `wave`
+2. add this CustomNPCs script to the NPC:
+
+```js
+function interact(event) {
+    var builder = event.API.createAnimBuilder()
+    builder.thenPlay("wave")
+    event.npc.syncAnimationsFor(event.player, builder)
+}
+```
+
+3. start the game with this compat mod and CNPC-Gecko-Addon installed
+4. interact with the NPC
+
+Expected result:
+
+- the player is not disconnected
+- the script does not throw `Payload cnpcgeckoaddon:packetsyncanimation may not be sent to the client`
+- the script does not throw `Failed to encode packet 'clientbound/minecraft:custom_payload'`
+- visible marks still render above the Gecko model NPC
+
 ## Regression boundaries
 
 This compat mod should only affect the following CustomNPCs scoreboard sync paths:
@@ -138,6 +163,8 @@ This compat mod should only affect the following CustomNPCs scoreboard sync path
 - `CustomNpcs.lambda$serverstart$2`
 - mark save handling in `SPacketMenuSave.handle`
 - mark data sync when an NPC starts being seen by a player or is opened in the editor
+- optional CNPC-Gecko-Addon animation sync payload registration and payload type correction
+- optional CNPC-Gecko-Addon NPC mark render restoration
 
 Anything outside those paths is out of scope and should behave exactly as before.
 

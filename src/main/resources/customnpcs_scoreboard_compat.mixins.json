@@ -3,6 +3,8 @@
   "package": "fr.narrnouille.customnpcsscoreboardcompat.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "cnpcgeckoaddon.PacketSyncAnimationMixin",
+    "cnpcgeckoaddon.PacketSyncTileAnimationMixin",
     "customnpcs.AvailabilityMixin",
     "customnpcs.CustomNpcsMixin",
     "customnpcs.EntityNPCInterfaceMixin",
@@ -10,6 +12,9 @@
     "customnpcs.SPacketMenuSaveMixin",
     "customnpcs.ServerTickHandlerMixin",
     "minecraft.ServerScoreboardAccessor"
+  ],
+  "client": [
+    "customnpcs.RenderNPCInterfaceGeckoMarkMixin"
   ],
   "injectors": {
     "defaultRequire": 1

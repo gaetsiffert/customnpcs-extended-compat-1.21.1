@@ -28,13 +28,16 @@ With this mod installed, scoreboard-based CustomNPCs conditions should be stable
 
 This mod does not add new gameplay or new scoreboard features. It is only a compatibility fix.
 
+It also includes an optional CNPC-Gecko-Addon compatibility fix for Gecko animation sync scripts that call `syncAnimationsFor(...)`. When CNPC-Gecko-Addon is installed, the compat registers the addon's animation sync payloads correctly and fixes the returned payload IDs so those scripts no longer disconnect the client on the targeted NeoForge version.
+
 ## Installation
 
 ### Dedicated server
 
 - install CustomNPCs on the server
 - install this mod on the server
-- clients can still join without this compat mod
+- clients can still join without this compat mod for scoreboard-only use
+- for CNPC-Gecko-Addon animation sync scripts, install this compat mod wherever CNPC-Gecko-Addon is installed
 
 ### Singleplayer / LAN
 
@@ -77,8 +80,10 @@ More detailed change notes and technical context are available on GitHub.
 - still required in singleplayer
 - focused on compatibility, not feature expansion
 - uses vanilla scoreboard packets and CustomNPCs packets only; no compat-specific client packet is required
+- CNPC-Gecko-Addon support is optional and inactive when that addon is absent
 
 tested with :
 - Minecraft `1.21.1`
 - NeoForge `21.1.230`
 - `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230` (testing with another CustomNPCs version is at the user's own risk)
+- optional CNPC-Gecko-Addon `1.21.1.20251029`
