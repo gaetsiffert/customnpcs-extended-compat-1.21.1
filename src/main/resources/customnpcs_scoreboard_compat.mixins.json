@@ -8,6 +8,7 @@
     "customnpcs.AvailabilityMixin",
     "customnpcs.CustomNpcsMixin",
     "customnpcs.EntityNPCInterfaceMixin",
+    "customnpcs.ScoreboardWrapperMixin",
     "customnpcs.NoppesUtilServerMixin",
     "customnpcs.SPacketMenuSaveMixin",
     "customnpcs.ServerTickHandlerMixin",

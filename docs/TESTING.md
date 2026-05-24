@@ -80,6 +80,8 @@ Expected result:
 
 ### 3. Dedicated server without the client jar
 
+This validates the scoreboard-only dedicated-server mode. It does not mean the mod is strictly server-side only; optional client-side Gecko mark rendering compatibility still requires the jar on clients that need that feature.
+
 1. install CustomNPCs and this compat mod on the dedicated server
 2. do not install this compat mod on the client
 3. join the server
@@ -129,7 +131,75 @@ Expected result on the affected CustomNPCs build:
 
 This mod fixes runtime behavior while installed. It does not rewrite CustomNPCs data to make the upstream bug disappear permanently.
 
-### 6. Optional CNPC-Gecko-Addon animation sync
+### 6. CustomNPCs scoreboard scripting API
+
+Use a clean world or reset the test objective first:
+
+```mcfunction
+/scoreboard objectives add cnpc_api_test dummy
+```
+
+#### Offline or fake scoreboard names
+
+1. create or edit an NPC
+2. add this CustomNPCs script to the NPC:
+
+```js
+function interact(event) {
+    var scoreboard = event.npc.getWorld().getScoreboard()
+    scoreboard.setPlayerScore("DefinitelyNotOnline", "cnpc_api_test", 42)
+    event.player.message("score set")
+}
+```
+
+3. interact with the NPC
+4. run:
+
+```mcfunction
+/scoreboard players get DefinitelyNotOnline cnpc_api_test
+```
+
+Expected result:
+
+- the script prints `score set`
+- no `ScoreHolder` null pointer is logged
+- the scoreboard command reports `DefinitelyNotOnline has 42 [cnpc_api_test]`
+
+#### Score deletion leaves teams intact
+
+1. run:
+
+```mcfunction
+/team add cnpc_team
+/team join cnpc_team @s
+/scoreboard players set @s cnpc_api_test 7
+```
+
+2. add this CustomNPCs script to the NPC:
+
+```js
+function interact(event) {
+    var scoreboard = event.npc.getWorld().getScoreboard()
+    scoreboard.deletePlayerScore(event.player.getName(), "cnpc_api_test")
+    event.player.message("delete called")
+}
+```
+
+3. interact with the NPC
+4. run:
+
+```mcfunction
+/scoreboard players get @s cnpc_api_test
+/team list cnpc_team
+```
+
+Expected result:
+
+- the script prints `delete called`
+- the player no longer has a `cnpc_api_test` score
+- the player is still listed in `cnpc_team`
+
+### 7. Optional CNPC-Gecko-Addon animation sync
 
 This is only relevant when CNPC-Gecko-Addon is installed.
 
@@ -163,6 +233,7 @@ This compat mod should only affect the following CustomNPCs scoreboard sync path
 - `CustomNpcs.lambda$serverstart$2`
 - mark save handling in `SPacketMenuSave.handle`
 - mark data sync when an NPC starts being seen by a player or is opened in the editor
+- CustomNPCs scoreboard scripting API score get, set, has, and delete methods
 - optional CNPC-Gecko-Addon animation sync payload registration and payload type correction
 - optional CNPC-Gecko-Addon NPC mark render restoration
 

@@ -6,6 +6,8 @@ This mod fixes the scoreboard condition crashes and client sync issues observed 
 
 It also includes an optional compatibility patch for CNPC-Gecko-Addon animation sync packets on the same Minecraft/NeoForge target.
 
+It also fixes two CustomNPCs scoreboard scripting API regressions on the affected build: setting scores for offline or fake scoreboard names no longer crashes, and deleting a player score no longer removes the player from their scoreboard team.
+
 ## Target
 
 - Minecraft `1.21.1`
@@ -21,6 +23,8 @@ On the affected CustomNPCs build, scoreboard-based availability conditions can b
 2. login can fail with a client disconnect that looks like `Invalid player data`
 3. a scoreboard update can throw an exception even though the score value was still changed
 4. mark data can fail to resync to the client after reconnecting to a dedicated server
+5. scripted scoreboard writes can crash when the target name is not an online player
+6. scripted score deletion can remove the player from their team instead of deleting the score
 
 In practice, this made scoreboard conditions unsafe for dialogs and similar logic.
 
@@ -37,6 +41,8 @@ In practice, this made scoreboard conditions unsafe for dialogs and similar logi
 - marks disappearing from the NPC editor after reconnecting to a dedicated server
 - mark scoreboard conditions only reacting again after removing and re-adding the condition
 - mark and child dialog scoreboard conditions not reacting after reconnect until the condition is edited again
+- NPC scripts using `world.getScoreboard().setPlayerScore(...)` crashing for offline or fake scoreboard names
+- NPC scripts using `world.getScoreboard().deletePlayerScore(...)` leaving the score intact and removing the player from their team
 
 ## Reproduction
 
@@ -77,6 +83,8 @@ The failures came from two concrete problems:
 
 A later mark-specific issue came from the server-side mark menu path updating and broadcasting runtime mark data without saving it back to the NPC persistent data, plus missing mark data sync when a client starts seeing or editing an NPC after reconnecting.
 
+The scripting API issue came from `ScoreboardWrapper` resolving score holders through `getPlayerByName(...)`, which returns `null` for offline players and fake scoreboard names. Its score deletion path also called the team removal API instead of the score reset API.
+
 ## What This Compat Changes
 
 This mod patches the affected scoreboard sync paths and the affected CustomNPCs mark data paths.
@@ -90,6 +98,8 @@ It does the following:
 - saves mark menu changes back to NPC persistent data
 - resends existing mark data when an NPC starts being seen by a player
 - resends mark data when a player opens the NPC editor
+- uses scoreboard name holders for CustomNPCs scoreboard scripting API score access
+- makes CustomNPCs scoreboard scripting API score deletion reset the requested score instead of changing team membership
 - registers CNPC-Gecko-Addon animation sync payloads when that addon is installed
 - corrects the CNPC-Gecko-Addon animation sync payload IDs returned at runtime
 - restores CustomNPCs mark rendering above NPCs that use a Gecko model
@@ -104,6 +114,7 @@ It does not:
 - change how CustomNPCs compares scoreboard values
 - validate Gecko animation names or model animation data
 - alter dialog, quest, faction, scripting, AI, rendering, GUI, or any unrelated CustomNPCs logic
+- change which scripts are allowed to edit scoreboards
 
 Scoreboard condition behavior remains:
 
@@ -138,17 +149,19 @@ It also restores CustomNPCs mark rendering for NPCs whose normal renderer is rep
 
 The patch is intentionally narrow.
 
-Only the paths listed above are touched, and only around scoreboard objective tracking, login scoreboard refresh, scoreboard packet sync, null handling, mark persistence, mark packet resync, and the optional CNPC-Gecko-Addon animation sync and mark rendering compatibility paths. That keeps the blast radius small, but this is still a runtime patch on other mods, so the usual warning applies: if a future CustomNPCs or CNPC-Gecko-Addon build changes those internals, this compat may need to be updated.
+Only the paths listed above are touched, and only around scoreboard objective tracking, login scoreboard refresh, scoreboard packet sync, null handling, mark persistence, mark packet resync, CustomNPCs scoreboard scripting API score access, and the optional CNPC-Gecko-Addon animation sync and mark rendering compatibility paths. That keeps the blast radius small, but this is still a runtime patch on other mods, so the usual warning applies: if a future CustomNPCs or CNPC-Gecko-Addon build changes those internals, this compat may need to be updated.
 
 ## Installation
+
+This mod is not strictly server-side only.
+
+On dedicated servers, it is server-required and client-optional for scoreboard-only use. Clients can join without this jar because `displayTest="IGNORE_SERVER_VERSION"` is set, but the jar is still built for both sides and includes optional client compatibility code.
 
 ### Dedicated Server
 
 - install this mod on the server
 - install CustomNPCs on the server
 - the client is allowed to join without this compat mod for scoreboard-only use
-
-This project sets `displayTest="IGNORE_SERVER_VERSION"` so the compat mod is client-optional for dedicated server joins.
 
 If you use CNPC-Gecko-Addon animation sync scripts, install this compat mod in the same runtime as CNPC-Gecko-Addon. In practice, Gecko model rendering usually means both the server and the client have CNPC-Gecko-Addon, so both sides should also have this compat mod for that specific fix.
 
@@ -186,6 +199,8 @@ In short: if the compat is removed but the scoreboard-driven NPC setup remains, 
 - `docs/changelogs/CHANGELOG_1.0.2.md`
   - previous release notes
 - `docs/changelogs/CHANGELOG_1.0.3.md`
+  - previous release notes
+- `docs/changelogs/CHANGELOG_1.0.4.md`
   - current release notes
 
 ## Useful Commands

@@ -30,6 +30,8 @@ This mod does not add new gameplay or new scoreboard features. It is only a comp
 
 It also includes an optional CNPC-Gecko-Addon compatibility fix for Gecko animation sync scripts that call `syncAnimationsFor(...)`. When CNPC-Gecko-Addon is installed, the compat registers the addon's animation sync payloads correctly and fixes the returned payload IDs so those scripts no longer disconnect the client on the targeted NeoForge version.
 
+It also fixes two CustomNPCs scoreboard scripting API issues on the affected build: scripts can safely set scores for offline or fake scoreboard names, and `deletePlayerScore(...)` now deletes the score instead of removing the player from their scoreboard team.
+
 ## Installation
 
 ### Dedicated server
@@ -38,6 +40,9 @@ It also includes an optional CNPC-Gecko-Addon compatibility fix for Gecko animat
 - install this mod on the server
 - clients can still join without this compat mod for scoreboard-only use
 - for CNPC-Gecko-Addon animation sync scripts, install this compat mod wherever CNPC-Gecko-Addon is installed
+- scoreboard scripting API fixes run on the server side
+
+This means the mod is server-required and client-optional on dedicated servers for scoreboard-only use. It is not strictly server-side only: the jar is built for both sides and includes optional client compatibility code for CNPC-Gecko-Addon mark rendering.
 
 ### Singleplayer / LAN
 
@@ -76,7 +81,8 @@ More detailed change notes and technical context are available on GitHub.
 
 ## Notes
 
-- client-optional on dedicated servers
+- server-required and client-optional on dedicated servers for scoreboard-only use
+- not strictly server-side only; optional client compatibility code is included
 - still required in singleplayer
 - focused on compatibility, not feature expansion
 - uses vanilla scoreboard packets and CustomNPCs packets only; no compat-specific client packet is required
