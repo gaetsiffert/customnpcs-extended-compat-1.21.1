@@ -13,7 +13,10 @@ It also fixes two CustomNPCs scoreboard scripting API regressions on the affecte
 - Minecraft `1.21.1`
 - NeoForge `21.1.230`
 - CustomNPCs `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230` (testing with another CustomNPCs version is at the user's own risk)
-- optional: CNPC-Gecko-Addon `1.21.1.20251029`
+- optional CNPC-Gecko-Addon `CNPC-Gecko-Addon-NeoForge-1.21.1-1.0.1`
+- optional GeckoLib `geckolib-neoforge-1.21.1-4.8.4`
+
+These are the versions this compat was tested with. Other CustomNPCs, CNPC-Gecko-Addon, GeckoLib, Minecraft, or NeoForge builds may work, but they are not implied to be supported by this release.
 
 ## Problem
 
@@ -103,6 +106,7 @@ It does the following:
 - registers CNPC-Gecko-Addon animation sync payloads when that addon is installed
 - corrects the CNPC-Gecko-Addon animation sync payload IDs returned at runtime
 - restores CustomNPCs mark rendering above NPCs that use a Gecko model
+- restores vanilla armor rendering for humanoid CNPC-Gecko models
 
 ## What This Compat Does Not Change
 
@@ -113,7 +117,7 @@ It does not:
 - create missing objectives for you
 - change how CustomNPCs compares scoreboard values
 - validate Gecko animation names or model animation data
-- alter dialog, quest, faction, scripting, AI, rendering, GUI, or any unrelated CustomNPCs logic
+- alter dialog, quest, faction, scripting, AI, GUI, or unrelated rendering logic
 - change which scripts are allowed to edit scoreboards
 
 Scoreboard condition behavior remains:
@@ -145,11 +149,13 @@ This compat registers the two Gecko animation sync payloads at runtime and corre
 
 It also restores CustomNPCs mark rendering for NPCs whose normal renderer is replaced by CNPC-Gecko-Addon. Marks still use CustomNPCs' own mark data and availability checks.
 
+For humanoid CNPC-Gecko models, it adds a Gecko armor render layer and syncs the NPC armor slots onto the rendered Gecko entity. Armor parts are attached to the matching Gecko bones so they can follow model animations without using GeckoLib's cube-size scaling that distorted vanilla armor pieces.
+
 ## Scope and Risk
 
 The patch is intentionally narrow.
 
-Only the paths listed above are touched, and only around scoreboard objective tracking, login scoreboard refresh, scoreboard packet sync, null handling, mark persistence, mark packet resync, CustomNPCs scoreboard scripting API score access, and the optional CNPC-Gecko-Addon animation sync and mark rendering compatibility paths. That keeps the blast radius small, but this is still a runtime patch on other mods, so the usual warning applies: if a future CustomNPCs or CNPC-Gecko-Addon build changes those internals, this compat may need to be updated.
+Only the paths listed above are touched, and only around scoreboard objective tracking, login scoreboard refresh, scoreboard packet sync, null handling, mark persistence, mark packet resync, CustomNPCs scoreboard scripting API score access, and the optional CNPC-Gecko-Addon animation sync, mark rendering, armor slot sync, and armor layer compatibility paths. That keeps the blast radius small, but this is still a runtime patch on other mods, so the usual warning applies: if a future CustomNPCs, CNPC-Gecko-Addon, or GeckoLib build changes those internals, this compat may need to be updated.
 
 ## Installation
 
@@ -157,19 +163,28 @@ This mod is not strictly server-side only.
 
 On dedicated servers, it is server-required and client-optional for scoreboard-only use. Clients can join without this jar because `displayTest="IGNORE_SERVER_VERSION"` is set, but the jar is still built for both sides and includes optional client compatibility code.
 
+Side requirements by feature:
+
+- scoreboard condition crash fixes: server required, client optional on dedicated servers
+- scoreboard scripting API fixes: server required
+- CustomNPCs mark persistence and resync fixes: server required
+- CNPC-Gecko-Addon animation sync packet fixes: install this compat wherever CNPC-Gecko-Addon runs; in normal Gecko NPC setups this means both server and client
+- CNPC-Gecko mark rendering and armor rendering fixes: client required, because they patch client renderers
+- GeckoLib is not required for scoreboard-only use; it is only needed when using the CNPC-Gecko-Addon rendering path
+
 ### Dedicated Server
 
 - install this mod on the server
 - install CustomNPCs on the server
 - the client is allowed to join without this compat mod for scoreboard-only use
 
-If you use CNPC-Gecko-Addon animation sync scripts, install this compat mod in the same runtime as CNPC-Gecko-Addon. In practice, Gecko model rendering usually means both the server and the client have CNPC-Gecko-Addon, so both sides should also have this compat mod for that specific fix.
+If you use CNPC-Gecko-Addon animation sync scripts, install this compat mod in the same runtime as CNPC-Gecko-Addon. In practice, Gecko model rendering usually means both the server and the client have CNPC-Gecko-Addon, so both sides should also have this compat mod for that specific fix. Armor and mark rendering fixes only affect clients that have the compat installed.
 
 ### Singleplayer / LAN
 
 - install this mod on the client instance
 - install CustomNPCs on the client instance
-- install CNPC-Gecko-Addon in the same instance only if you need Gecko model animation sync
+- install CNPC-Gecko-Addon and GeckoLib in the same instance only if you need Gecko model animation sync or Gecko model rendering fixes
 
 Singleplayer still runs an integrated server, so the patch must be present in that runtime too.
 
@@ -201,6 +216,8 @@ In short: if the compat is removed but the scoreboard-driven NPC setup remains, 
 - `docs/changelogs/CHANGELOG_1.0.3.md`
   - previous release notes
 - `docs/changelogs/CHANGELOG_1.0.4.md`
+  - previous release notes
+- `docs/changelogs/CHANGELOG_1.0.5.md`
   - current release notes
 
 ## Useful Commands

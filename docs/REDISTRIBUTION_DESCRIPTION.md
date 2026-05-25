@@ -28,7 +28,7 @@ With this mod installed, scoreboard-based CustomNPCs conditions should be stable
 
 This mod does not add new gameplay or new scoreboard features. It is only a compatibility fix.
 
-It also includes an optional CNPC-Gecko-Addon compatibility fix for Gecko animation sync scripts that call `syncAnimationsFor(...)`. When CNPC-Gecko-Addon is installed, the compat registers the addon's animation sync payloads correctly and fixes the returned payload IDs so those scripts no longer disconnect the client on the targeted NeoForge version.
+It also includes optional CNPC-Gecko-Addon compatibility fixes. When CNPC-Gecko-Addon is installed, the compat registers the addon's animation sync payloads correctly and fixes the returned payload IDs so `syncAnimationsFor(...)` scripts no longer disconnect the client on the targeted NeoForge version. It also restores CustomNPCs marks and vanilla armor rendering on humanoid Gecko NPC models.
 
 It also fixes two CustomNPCs scoreboard scripting API issues on the affected build: scripts can safely set scores for offline or fake scoreboard names, and `deletePlayerScore(...)` now deletes the score instead of removing the player from their scoreboard team.
 
@@ -39,15 +39,25 @@ It also fixes two CustomNPCs scoreboard scripting API issues on the affected bui
 - install CustomNPCs on the server
 - install this mod on the server
 - clients can still join without this compat mod for scoreboard-only use
-- for CNPC-Gecko-Addon animation sync scripts, install this compat mod wherever CNPC-Gecko-Addon is installed
+- for CNPC-Gecko-Addon animation sync, install this compat mod wherever CNPC-Gecko-Addon is installed
+- for CNPC-Gecko-Addon mark or armor rendering fixes, install this compat mod on the client
 - scoreboard scripting API fixes run on the server side
 
-This means the mod is server-required and client-optional on dedicated servers for scoreboard-only use. It is not strictly server-side only: the jar is built for both sides and includes optional client compatibility code for CNPC-Gecko-Addon mark rendering.
+This means the mod is server-required and client-optional on dedicated servers for scoreboard-only use. It is not strictly server-side only: the jar is built for both sides and includes optional client compatibility code for CNPC-Gecko-Addon mark and armor rendering.
+
+Side requirements by feature:
+
+- scoreboard condition, mark persistence, and scoreboard scripting fixes: server required
+- scoreboard-only clients may join without this compat mod
+- CNPC-Gecko-Addon animation sync fixes: install wherever CNPC-Gecko-Addon runs, usually both server and client
+- CNPC-Gecko-Addon mark and armor rendering fixes: client required
+- GeckoLib is not required for scoreboard-only use
 
 ### Singleplayer / LAN
 
 - install CustomNPCs
 - install this mod in the same game instance
+- install CNPC-Gecko-Addon and GeckoLib only if you need Gecko model animation sync or Gecko model rendering fixes
 
 Singleplayer still uses an integrated server, so the mod is needed there too.
 
@@ -92,4 +102,7 @@ tested with :
 - Minecraft `1.21.1`
 - NeoForge `21.1.230`
 - `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230` (testing with another CustomNPCs version is at the user's own risk)
-- optional CNPC-Gecko-Addon `1.21.1.20251029`
+- optional CNPC-Gecko-Addon `CNPC-Gecko-Addon-NeoForge-1.21.1-1.0.1`
+- optional GeckoLib `geckolib-neoforge-1.21.1-4.8.4`
+
+Other CustomNPCs, CNPC-Gecko-Addon, GeckoLib, Minecraft, or NeoForge builds are not implied to be supported by this release.

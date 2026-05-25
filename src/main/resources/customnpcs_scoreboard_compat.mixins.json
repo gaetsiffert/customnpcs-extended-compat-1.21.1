@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "fr.narrnouille.customnpcsscoreboardcompat.mixin",
+  "plugin": "fr.narrnouille.customnpcsscoreboardcompat.mixin.CustomNpcsScoreboardCompatMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "cnpcgeckoaddon.PacketSyncAnimationMixin",
@@ -15,6 +16,8 @@
     "minecraft.ServerScoreboardAccessor"
   ],
   "client": [
+    "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
+    "customnpcs.RenderNPCInterfaceGeckoEquipmentMixin",
     "customnpcs.RenderNPCInterfaceGeckoMarkMixin"
   ],
   "injectors": {
