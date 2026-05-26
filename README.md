@@ -2,9 +2,13 @@
 
 NeoForge 1.21.1 compatibility and quality-of-life extension mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
 
-This mod fixes several CustomNPCs Unofficial issues on the targeted build and extends a few editor limits/UI flows that are otherwise hard-coded.
+This mod is a practical collection of small CustomNPCs fixes and quality-of-life changes made while running a larger server setup. Each addition comes from an issue, limitation, or awkward workflow that became annoying enough to fix: crashes, sync bugs, hard-coded limits, missing editor tools, or behavior that could be made easier and more logical.
+
+It fixes several CustomNPCs Unofficial issues on the targeted build and extends a few editor limits/UI flows that are otherwise hard-coded.
 
 It covers scoreboard availability stability, scoreboard scripting regressions, mark persistence/sync, expanded mark and NPC dialog slot limits, searchable model-style selection windows, configurable inventory tabs, and optional CNPC-Gecko-Addon rendering and animation sync patches on the same Minecraft/NeoForge target.
+
+Before version 1.0.6, this mod was named CustomNPCs Scoreboard Compat and used the mod id `customnpcs_scoreboard_compat`.
 
 ## Target
 
@@ -32,6 +36,8 @@ On the affected CustomNPCs build, some useful workflows are either unstable or h
 10. CustomNPCs inventory tabs are always shown and can be visually misaligned
 
 In practice, this made scoreboard conditions unsafe for dialogs and similar logic, and made larger NPC setups harder to manage.
+
+The scope follows the same principle as the server it comes from: when a CustomNPCs behavior blocks a real workflow, causes avoidable confusion, or breaks under normal use, this compat mod patches that specific point instead of trying to redesign the whole mod.
 
 ## Typical Symptoms
 
@@ -230,6 +236,8 @@ In short: if the compat is removed but the scoreboard-driven NPC setup remains, 
 - `docs/changelogs/CHANGELOG_1.0.4.md`
   - previous release notes
 - `docs/changelogs/CHANGELOG_1.0.5.md`
+  - previous release notes
+- `docs/changelogs/CHANGELOG_1.0.6.md`
   - current release notes
 
 ## Useful Commands

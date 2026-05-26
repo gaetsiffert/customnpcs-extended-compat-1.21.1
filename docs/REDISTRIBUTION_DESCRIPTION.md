@@ -2,7 +2,11 @@
 
 CustomNPCs Extended Compat is a NeoForge 1.21.1 compatibility and quality-of-life extension mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
 
-Its goal is to stabilize the targeted CustomNPCs build and remove a few hard-coded editor/UI limits that get in the way of larger NPC setups.
+It is built as a practical patch mod for a larger server setup. Additions are made when a CustomNPCs issue, hard-coded limit, confusing workflow, or small bug gets in the way of real use and needs to be fixed or made easier to work with.
+
+Its goal is to stabilize the targeted CustomNPCs build and remove a few hard-coded editor/UI limits that get in the way of larger NPC setups, without turning this into a full CustomNPCs rewrite.
+
+Before version 1.0.6, this mod was named CustomNPCs Scoreboard Compat and used the mod id `customnpcs_scoreboard_compat`.
 
 ## What it changes
 
