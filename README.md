@@ -1,12 +1,10 @@
-# CustomNPCs Scoreboard Compat
+# CustomNPCs Extended Compat
 
-NeoForge 1.21.1 compatibility mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
+NeoForge 1.21.1 compatibility and quality-of-life extension mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
 
-This mod fixes the scoreboard condition crashes and client sync issues observed with CustomNPCs when NPC dialogs, dialog options, quests, or marks use scoreboard availability.
+This mod fixes several CustomNPCs Unofficial issues on the targeted build and extends a few editor limits/UI flows that are otherwise hard-coded.
 
-It also includes an optional compatibility patch for CNPC-Gecko-Addon animation sync packets on the same Minecraft/NeoForge target.
-
-It also fixes two CustomNPCs scoreboard scripting API regressions on the affected build: setting scores for offline or fake scoreboard names no longer crashes, and deleting a player score no longer removes the player from their scoreboard team.
+It covers scoreboard availability stability, scoreboard scripting regressions, mark persistence/sync, expanded mark and NPC dialog slot limits, searchable model-style selection windows, configurable inventory tabs, and optional CNPC-Gecko-Addon rendering and animation sync patches on the same Minecraft/NeoForge target.
 
 ## Target
 
@@ -20,7 +18,7 @@ These are the versions this compat was tested with. Other CustomNPCs, CNPC-Gecko
 
 ## Problem
 
-On the affected CustomNPCs build, scoreboard-based availability conditions can break in several ways:
+On the affected CustomNPCs build, some useful workflows are either unstable or hard-coded in ways that are limiting for larger setups:
 
 1. a duplicate objective packet is sent to the client
 2. login can fail with a client disconnect that looks like `Invalid player data`
@@ -28,8 +26,12 @@ On the affected CustomNPCs build, scoreboard-based availability conditions can b
 4. mark data can fail to resync to the client after reconnecting to a dedicated server
 5. scripted scoreboard writes can crash when the target name is not an online player
 6. scripted score deletion can remove the player from their team instead of deleting the score
+7. NPC marks are limited to the small vanilla mark set and 10 marks per NPC
+8. NPC dialog slots are limited to the vanilla 12 slots
+9. some large selection windows, including Gecko model/animation lists, have no search
+10. CustomNPCs inventory tabs are always shown and can be visually misaligned
 
-In practice, this made scoreboard conditions unsafe for dialogs and similar logic.
+In practice, this made scoreboard conditions unsafe for dialogs and similar logic, and made larger NPC setups harder to manage.
 
 ## Typical Symptoms
 
@@ -90,7 +92,7 @@ The scripting API issue came from `ScoreboardWrapper` resolving score holders th
 
 ## What This Compat Changes
 
-This mod patches the affected scoreboard sync paths and the affected CustomNPCs mark data paths.
+This mod patches the affected scoreboard sync paths, mark data paths, editor limits, and selected client GUI paths.
 
 It does the following:
 
@@ -103,6 +105,13 @@ It does the following:
 - resends mark data when a player opens the NPC editor
 - uses scoreboard name holders for CustomNPCs scoreboard scripting API score access
 - makes CustomNPCs scoreboard scripting API score deletion reset the requested score instead of changing team membership
+- expands NPC marks to 64 marks per NPC
+- adds custom mark slots `custom_mark_1` through `custom_mark_64`, loaded from `customnpcs:textures/marks/custom_mark_N.png`
+- replaces the mark type cycle button with a searchable selection window
+- expands NPC dialog slots to 64 and patches the scripting API dialog slot range
+- adds search to `GuiStringSlotNop` selection windows, including CNPC-Gecko model and animation selectors
+- adds a client config for showing or hiding the CustomNPCs inventory tabs for factions and quests
+- realigns the CustomNPCs inventory tabs to the actual active GUI panel
 - registers CNPC-Gecko-Addon animation sync payloads when that addon is installed
 - corrects the CNPC-Gecko-Addon animation sync payload IDs returned at runtime
 - restores CustomNPCs mark rendering above NPCs that use a Gecko model
@@ -117,8 +126,9 @@ It does not:
 - create missing objectives for you
 - change how CustomNPCs compares scoreboard values
 - validate Gecko animation names or model animation data
-- alter dialog, quest, faction, scripting, AI, GUI, or unrelated rendering logic
+- change quest, faction, AI, or unrelated rendering logic
 - change which scripts are allowed to edit scoreboards
+- auto-generate custom mark PNG files
 
 Scoreboard condition behavior remains:
 
@@ -168,6 +178,8 @@ Side requirements by feature:
 - scoreboard condition crash fixes: server required, client optional on dedicated servers
 - scoreboard scripting API fixes: server required
 - CustomNPCs mark persistence and resync fixes: server required
+- expanded mark/dialog limits: install wherever NPC editing or scripting APIs are used
+- mark type selector, selection-list search, and inventory tab config: client required
 - CNPC-Gecko-Addon animation sync packet fixes: install this compat wherever CNPC-Gecko-Addon runs; in normal Gecko NPC setups this means both server and client
 - CNPC-Gecko mark rendering and armor rendering fixes: client required, because they patch client renderers
 - GeckoLib is not required for scoreboard-only use; it is only needed when using the CNPC-Gecko-Addon rendering path

@@ -1,32 +1,40 @@
-# CustomNPCs Scoreboard Compat
+# CustomNPCs Extended Compat
 
-CustomNPCs Scoreboard Compat is a NeoForge 1.21.1 compatibility mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
+CustomNPCs Extended Compat is a NeoForge 1.21.1 compatibility and quality-of-life extension mod for `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`.
 
-Its goal is simple: make CustomNPCs scoreboard conditions usable again on the affected build.
+Its goal is to stabilize the targeted CustomNPCs build and remove a few hard-coded editor/UI limits that get in the way of larger NPC setups.
 
-## What it fixes
+## What it changes
 
-Without this compat mod, using scoreboards in CustomNPCs availability conditions can cause problems such as:
+Without this mod, the targeted CustomNPCs build can have problems such as:
 
 - crashes when rejoining a world or server
 - join failures that may appear as `Invalid player data`
 - errors after changing a scoreboard value
 - NPC marks disappearing after reconnecting to a dedicated server
 - mark or child dialog scoreboard conditions not reacting after reconnect until edited again
+- only a small hard-coded mark type list
+- a 10 marks per NPC editor limit
+- a 12 dialog slots per NPC editor/API limit
+- large model or animation selectors with no search
+- inventory tabs that cannot be configured and may be visually misaligned
 
-This mod is meant for players, server owners, and modpacks that want to use scoreboards to drive:
+This mod is meant for players, server owners, and modpacks that want more stable and more flexible CustomNPCs setups, including:
 
 - NPC dialog availability
 - NPC dialog option availability
 - NPC quest availability
 - NPC mark availability
+- larger mark setups with custom `custom_mark_N` textures
+- more NPC dialog slots
+- CNPC-Gecko model and animation selection
 - progression links with other mods or server systems
 
 ## What to expect
 
 With this mod installed, scoreboard-based CustomNPCs conditions should be stable again on the targeted version set. This includes conditions that are evaluated client-side, such as marks above NPCs and child dialog options. NPC marks are also saved and resynced correctly after reconnecting to a dedicated server.
 
-This mod does not add new gameplay or new scoreboard features. It is only a compatibility fix.
+It also expands the mark editor to 64 marks per NPC, adds `custom_mark_1` through `custom_mark_64`, expands NPC dialogue slots to 64, adds search to shared string selection lists, and adds a client config for showing or hiding the CustomNPCs inventory factions/quests tabs.
 
 It also includes optional CNPC-Gecko-Addon compatibility fixes. When CNPC-Gecko-Addon is installed, the compat registers the addon's animation sync payloads correctly and fixes the returned payload IDs so `syncAnimationsFor(...)` scripts no longer disconnect the client on the targeted NeoForge version. It also restores CustomNPCs marks and vanilla armor rendering on humanoid Gecko NPC models.
 
@@ -39,6 +47,7 @@ It also fixes two CustomNPCs scoreboard scripting API issues on the affected bui
 - install CustomNPCs on the server
 - install this mod on the server
 - clients can still join without this compat mod for scoreboard-only use
+- install this mod on clients that need the CustomNPCs inventory tab config, searchable selectors, custom mark selector, or Gecko rendering fixes
 - for CNPC-Gecko-Addon animation sync, install this compat mod wherever CNPC-Gecko-Addon is installed
 - for CNPC-Gecko-Addon mark or armor rendering fixes, install this compat mod on the client
 - scoreboard scripting API fixes run on the server side
@@ -49,6 +58,7 @@ Side requirements by feature:
 
 - scoreboard condition, mark persistence, and scoreboard scripting fixes: server required
 - scoreboard-only clients may join without this compat mod
+- mark/dialog editor extensions and inventory tab UI fixes: client required for editing/UI use
 - CNPC-Gecko-Addon animation sync fixes: install wherever CNPC-Gecko-Addon runs, usually both server and client
 - CNPC-Gecko-Addon mark and armor rendering fixes: client required
 - GeckoLib is not required for scoreboard-only use
@@ -94,7 +104,7 @@ More detailed change notes and technical context are available on GitHub.
 - server-required and client-optional on dedicated servers for scoreboard-only use
 - not strictly server-side only; optional client compatibility code is included
 - still required in singleplayer
-- focused on compatibility, not feature expansion
+- focused on compatibility fixes and editor/UI quality-of-life extensions
 - uses vanilla scoreboard packets and CustomNPCs packets only; no compat-specific client packet is required
 - CNPC-Gecko-Addon support is optional and inactive when that addon is absent
 

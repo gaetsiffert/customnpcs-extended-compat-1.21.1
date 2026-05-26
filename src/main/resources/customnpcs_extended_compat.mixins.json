@@ -1,0 +1,36 @@
+{
+  "required": true,
+  "package": "fr.narrnouille.customnpcsextendedcompat.mixin",
+  "plugin": "fr.narrnouille.customnpcsextendedcompat.mixin.CustomNpcsExtendedCompatMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "cnpcgeckoaddon.PacketSyncAnimationMixin",
+    "cnpcgeckoaddon.PacketSyncTileAnimationMixin",
+    "customnpcs.AvailabilityMixin",
+    "customnpcs.CustomNpcsMixin",
+    "customnpcs.EntityNPCInterfaceMixin",
+    "customnpcs.ScoreboardWrapperMixin",
+    "customnpcs.NoppesUtilServerMixin",
+    "customnpcs.NPCWrapperDialogSlotMixin",
+    "customnpcs.SPacketMenuSaveMixin",
+    "customnpcs.ServerTickHandlerMixin",
+    "minecraft.ServerScoreboardAccessor"
+  ],
+  "client": [
+    "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
+    "customnpcs.AbstractTabMixin",
+    "customnpcs.GuiNPCDialogNpcOptionsMixin",
+    "customnpcs.GuiNPCMarksMixin",
+    "customnpcs.GuiStringSlotNopSearchMixin",
+    "customnpcs.MarkRendererCustomTypesMixin",
+    "customnpcs.RenderNPCInterfaceGeckoEquipmentMixin",
+    "customnpcs.RenderNPCInterfaceGeckoMarkMixin",
+    "minecraft.AbstractContainerScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
