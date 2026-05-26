@@ -11,12 +11,14 @@
     "customnpcs.EntityNPCInterfaceMixin",
     "customnpcs.ScoreboardWrapperMixin",
     "customnpcs.NoppesUtilServerMixin",
+    "customnpcs.NPCWrapperDialogSlotMixin",
     "customnpcs.SPacketMenuSaveMixin",
     "customnpcs.ServerTickHandlerMixin",
     "minecraft.ServerScoreboardAccessor"
   ],
   "client": [
     "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
+    "customnpcs.GuiNPCDialogNpcOptionsMixin",
     "customnpcs.GuiNPCMarksMixin",
     "customnpcs.MarkRendererCustomTypesMixin",
     "customnpcs.RenderNPCInterfaceGeckoEquipmentMixin",
