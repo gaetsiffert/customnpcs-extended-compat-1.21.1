@@ -20,6 +20,7 @@
     "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
     "customnpcs.GuiNPCDialogNpcOptionsMixin",
     "customnpcs.GuiNPCMarksMixin",
+    "customnpcs.GuiStringSlotNopSearchMixin",
     "customnpcs.MarkRendererCustomTypesMixin",
     "customnpcs.RenderNPCInterfaceGeckoEquipmentMixin",
     "customnpcs.RenderNPCInterfaceGeckoMarkMixin"
