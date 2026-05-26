@@ -17,6 +17,8 @@
   ],
   "client": [
     "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
+    "customnpcs.GuiNPCMarksMixin",
+    "customnpcs.MarkRendererCustomTypesMixin",
     "customnpcs.RenderNPCInterfaceGeckoEquipmentMixin",
     "customnpcs.RenderNPCInterfaceGeckoMarkMixin"
   ],
