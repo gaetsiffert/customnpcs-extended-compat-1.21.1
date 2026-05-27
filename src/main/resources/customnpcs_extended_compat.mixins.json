@@ -7,6 +7,7 @@
     "cnpcgeckoaddon.PacketSyncAnimationMixin",
     "cnpcgeckoaddon.PacketSyncTileAnimationMixin",
     "customnpcs.AvailabilityMixin",
+    "customnpcs.CustomGuiWrapperDefaultBackgroundMixin",
     "customnpcs.CustomNpcsMixin",
     "customnpcs.EntityNPCInterfaceMixin",
     "customnpcs.ScoreboardWrapperMixin",
@@ -19,6 +20,7 @@
   "client": [
     "cnpcgeckoaddon.RenderCustomModelArmorLayerMixin",
     "customnpcs.AbstractTabMixin",
+    "customnpcs.GuiCustomDefaultBackgroundMixin",
     "customnpcs.GuiNPCDialogNpcOptionsMixin",
     "customnpcs.GuiNPCMarksMixin",
     "customnpcs.GuiStringSlotNopSearchMixin",
