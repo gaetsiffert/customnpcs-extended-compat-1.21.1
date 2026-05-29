@@ -9,6 +9,7 @@
     "customnpcs.AvailabilityMixin",
     "customnpcs.CustomGuiWrapperDefaultBackgroundMixin",
     "customnpcs.CustomNpcsMixin",
+    "customnpcs.DataDisplayVisibilityAvailabilityMixin",
     "customnpcs.EntityNPCInterfaceMixin",
     "customnpcs.ScoreboardWrapperMixin",
     "customnpcs.NoppesUtilServerMixin",
