@@ -1,10 +1,10 @@
 package fr.narrnouille.customnpcsextendedcompat.mixin.customnpcs;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import fr.narrnouille.customnpcsextendedcompat.compat.cnpcgeckoaddon.EntityCustomModelOverlayBridge;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 import noppes.npcs.entity.EntityCustomNpc;
 import noppes.npcs.entity.EntityNPCInterface;
@@ -14,21 +14,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = noppes.npcs.client.renderer.RenderNPCInterface.class, priority = 1500)
-public abstract class RenderNPCInterfaceGeckoEquipmentMixin {
+public abstract class RenderNPCInterfaceGeckoOverlayMixin {
     private static final String GECKO_MODEL_CLASS = "com.goodbird.cnpcgeckoaddon.entity.EntityCustomModel";
     private static final String GECKO_MODID = "cnpcgeckoaddon";
-    private static final EquipmentSlot[] ARMOR_SLOTS = {
-            EquipmentSlot.HEAD,
-            EquipmentSlot.CHEST,
-            EquipmentSlot.LEGS,
-            EquipmentSlot.FEET
-    };
 
     @Inject(
             method = "render(Lnoppes/npcs/entity/EntityNPCInterface;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
             at = @At("HEAD")
     )
-    private void customnpcsExtendedCompat$syncArmorForGeckoNpc(
+    private void customnpcsExtendedCompat$syncOverlayForGeckoNpc(
             EntityNPCInterface npc,
             float entityYaw,
             float partialTicks,
@@ -42,18 +36,20 @@ public abstract class RenderNPCInterfaceGeckoEquipmentMixin {
         }
 
         LivingEntity modelEntity = customNpc.modelData.getEntity(npc);
-        if (modelEntity == null || !GECKO_MODEL_CLASS.equals(modelEntity.getClass().getName())) {
+        if (!(modelEntity instanceof EntityCustomModelOverlayBridge overlayBridge)
+                || !GECKO_MODEL_CLASS.equals(modelEntity.getClass().getName())) {
             return;
         }
 
-        for (EquipmentSlot slot : ARMOR_SLOTS) {
-            ItemStack stack = npc.getItemBySlot(slot);
-            modelEntity.setItemSlot(slot, stack);
-        }
+        String overlayTexture = npc.display == null ? null : npc.display.getOverlayTexture();
+        overlayBridge.customnpcsExtendedCompat$setOverlayTexture(parseOverlayTexture(overlayTexture));
+        overlayBridge.customnpcsExtendedCompat$setOverlayGlowing(npc.display != null && npc.display.isOverlayGlowing());
+    }
 
-        ItemStack mainHand = npc.getItemBySlot(EquipmentSlot.MAINHAND);
-        ItemStack offHand = npc.getItemBySlot(EquipmentSlot.OFFHAND);
-        modelEntity.setItemSlot(EquipmentSlot.MAINHAND, mainHand);
-        modelEntity.setItemSlot(EquipmentSlot.OFFHAND, offHand);
+    private static ResourceLocation parseOverlayTexture(String texture) {
+        if (texture == null || texture.isEmpty()) {
+            return null;
+        }
+        return ResourceLocation.tryParse(texture);
     }
 }

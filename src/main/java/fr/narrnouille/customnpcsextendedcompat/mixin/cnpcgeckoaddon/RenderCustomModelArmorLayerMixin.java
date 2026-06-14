@@ -1,6 +1,8 @@
 package fr.narrnouille.customnpcsextendedcompat.mixin.cnpcgeckoaddon;
 
+import fr.narrnouille.customnpcsextendedcompat.client.render.CnpcGeckoHeldItemLayer;
 import fr.narrnouille.customnpcsextendedcompat.client.render.CnpcGeckoHumanoidArmorLayer;
+import fr.narrnouille.customnpcsextendedcompat.client.render.CnpcGeckoOverlayLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,8 +14,10 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 public abstract class RenderCustomModelArmorLayerMixin {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void customnpcsExtendedCompat$addHumanoidArmorLayer(EntityRendererProvider.Context context, CallbackInfo callbackInfo) {
+    private void customnpcsExtendedCompat$addCustomNpcLayers(EntityRendererProvider.Context context, CallbackInfo callbackInfo) {
         GeoEntityRenderer renderer = (GeoEntityRenderer) (Object) this;
+        renderer.addRenderLayer(new CnpcGeckoHeldItemLayer<>(renderer));
         renderer.addRenderLayer(new CnpcGeckoHumanoidArmorLayer<>(renderer));
+        renderer.addRenderLayer(new CnpcGeckoOverlayLayer<>(renderer));
     }
 }
