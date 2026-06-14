@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import fr.narrnouille.customnpcsextendedcompat.client.render.CustomNpcLabelSmoother;
+import fr.narrnouille.customnpcsextendedcompat.client.render.CustomNpcNameTagDepthRenderer;
 import fr.narrnouille.customnpcsextendedcompat.client.render.ShaderShadowPassState;
 import fr.narrnouille.customnpcsextendedcompat.compat.customnpcs.CustomNpcNameTagBridge;
 import net.minecraft.client.Minecraft;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.fml.ModList;
 import noppes.npcs.client.renderer.RenderNPCInterface;
 import noppes.npcs.entity.EntityNPCInterface;
 import org.joml.Matrix4f;
@@ -32,22 +32,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class RenderNPCInterfaceNameTagMixin {
     private static final int MIN_NAME_TAG_BLOCK_LIGHT = 4;
     private static final int MIN_NAME_TAG_SKY_LIGHT = 2;
-    private static final RenderType DEPTH_WRITING_NAME_TAG_BACKGROUND = RenderType.create(
-            "customnpcs_extended_compat_name_tag_background_depth_write",
-            DefaultVertexFormat.POSITION_COLOR_LIGHTMAP,
-            VertexFormat.Mode.QUADS,
-            1536,
-            false,
-            true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_TEXT_BACKGROUND_SHADER)
-                    .setTextureState(RenderStateShard.NO_TEXTURE)
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .createCompositeState(false)
-    );
     private static final RenderType DEPTH_TESTED_NAME_TAG_BACKGROUND = RenderType.create(
             "customnpcs_extended_compat_name_tag_background_depth_test",
             DefaultVertexFormat.POSITION_COLOR_LIGHTMAP,
@@ -182,6 +166,22 @@ public abstract class RenderNPCInterfaceNameTagMixin {
             int packedLight
     ) {
         int nameTagLight = customnpcsExtendedCompat$clampNameTagLight(packedLight);
+        if (CustomNpcNameTagDepthRenderer.shouldDeferDepthWritingNameTags()) {
+            CustomNpcNameTagDepthRenderer.enqueueNameTag(
+                    font,
+                    component,
+                    x,
+                    y,
+                    color,
+                    dropShadow,
+                    matrix,
+                    displayMode,
+                    backgroundColor,
+                    nameTagLight
+            );
+            return 0;
+        }
+
         if (backgroundColor != 0) {
             customnpcsExtendedCompat$renderNameTagBackground(font, component, x, y, matrix, buffer, backgroundColor, nameTagLight);
 
@@ -233,9 +233,6 @@ public abstract class RenderNPCInterfaceNameTagMixin {
     }
 
     private static RenderType customnpcsExtendedCompat$getNameTagBackgroundRenderType() {
-        if (ModList.get().isLoaded("iris") || ModList.get().isLoaded("oculus")) {
-            return DEPTH_WRITING_NAME_TAG_BACKGROUND;
-        }
         return DEPTH_TESTED_NAME_TAG_BACKGROUND;
     }
 
