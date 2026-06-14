@@ -224,6 +224,41 @@ Expected result:
 - the script does not throw `Failed to encode packet 'clientbound/minecraft:custom_payload'`
 - visible marks still render above the Gecko model NPC
 
+## Changement Brover
+
+Les changements Brover ajoutes depuis le clone de reference `origin/neoforge-1-21-1` doivent etre verifies par themes :
+
+### Dimensions et hitbox
+
+- verifier qu'un NPC avec taille non entiere garde une hitbox coherente avec son rendu
+- verifier les dimensions d'un NPC Gecko avec et sans dimensions personnalisees
+- verifier que les controles d'edition de taille restent stables apres sauvegarde et reouverture
+
+### Nametags, marques et disponibilite
+
+- verifier que nom, titre et marque restent lisibles avec la nouvelle opacite et la gestion de profondeur
+- verifier que les marques font face au joueur et gardent une position correcte avec nom seul, titre seul, nom + titre, ou aucun des deux
+- verifier que l'offset vertical du bloc nom/titre/marque est applique
+- verifier les trois slots d'availability scoreboard, notamment apres sauvegarde, reconnexion et changement de score
+- verifier que le fond modifie des nametags ne s'applique que dans le cas Iris/Oculus prevu
+
+### CNPC-Gecko-Addon
+
+- verifier l'overlay de texture sur un modele Gecko
+- verifier les objets tenus main gauche et main droite avec des locators de modele
+- verifier que les objets utilisent un rendu Third Person coherent avec le rendu vanilla
+- verifier que la preview de NPC Gecko s'affiche en vue 3/4 face
+- verifier qu'une tete Gecko enfant d'un body ou d'une chaine de bones inclinee garde une orientation correcte pendant le regard
+
+### Animations et dialogues
+
+- verifier que `thenWait(int)` respecte la duree demandee
+- verifier une sequence manuelle composee de plusieurs animations et attentes
+- verifier qu'a la fin d'une sequence manuelle, l'idle reprend hors dialogue
+- verifier qu'a la fin d'une sequence manuelle pendant un dialogue `stopAndInteract`, l'idle de dialogue reprend aussi
+- verifier `setDialogLookAt(...)`, `clearDialogLookAt(...)` et `stopManualAnimation(...)` en script CustomNPCs
+- verifier que le focus de dialogue client suit la cible sans bloquer durablement la routine du NPC apres fermeture du dialogue
+
 ## Regression boundaries
 
 This compat mod should only affect the following CustomNPCs scoreboard sync paths:

@@ -35,3 +35,41 @@
 - clients will now create/read the client config file for the new mod id, `customnpcs_extended_compat-client.toml`
 - existing custom mark texture names remain simple and predictable; players can replace `custom_mark_N.png` files with their own textures
 - tested with Minecraft `1.21.1`, NeoForge `21.1.230`, CustomNPCs `CustomNPCs-Unofficial-NeoForge-1.21.1.20251230`, optional CNPC-Gecko-Addon `CNPC-Gecko-Addon-NeoForge-1.21.1-1.0.1`, and optional GeckoLib `geckolib-neoforge-1.21.1-4.8.4`
+
+## Changement Brover
+
+Changements ajoutes depuis le clone de reference `origin/neoforge-1-21-1`, regroupes par theme.
+
+### Dimensions et hitbox
+
+- conversion de la taille des NPC en float pour autoriser des valeurs plus fines
+- ajustement des dimensions et hitbox des NPC vanilla et Gecko
+- ajout de dimensions par defaut pour les donnees de modeles Gecko
+- ajout et correction des controles d'edition de taille dans les interfaces CustomNPCs
+
+### Nametags, marques et availability
+
+- rendu des nametags plus coherent avec opacite reduite et gestion de profondeur
+- application du fond de nametag modifie seulement lorsque le contexte Iris/Oculus le necessite
+- marques orientees face au joueur et positionnees selon la presence du nom et du titre
+- taille des noms, titres et marques synchronisee avec la taille du NPC
+- ajout d'un offset vertical configurable pour le bloc nom/titre/marque
+- ajout d'un troisieme slot d'availability scoreboard
+
+### CNPC-Gecko-Addon
+
+- restauration de l'overlay de texture sur les modeles Gecko
+- rendu des objets tenus en version Third Person au lieu du rendu Fixed
+- support plus complet de la main gauche, de la main droite et des locators d'objets
+- calcul de position d'objet rendu plus permissif pour les modeles Gecko
+- preview de NPC Gecko en vue 3/4 face
+- correction de la rotation de tete Gecko quand le bone de tete depend d'un body ou d'une chaine de bones inclinee
+
+### Animations, dialogues et scripts
+
+- correction de `thenWait(int)` pour transmettre la duree d'attente
+- nouveau pipeline pour les suites d'animations manuelles multi-etapes
+- correction du retour a l'idle quand une sequence manuelle se termine, y compris pendant un dialogue
+- ajout d'un idle force pendant les dialogues `stopAndInteract`
+- focus de dialogue gere localement cote client avec reprise de routine a la fermeture du dialogue
+- ajout des commandes script `setDialogLookAt(...)`, `clearDialogLookAt(...)` et `stopManualAnimation(...)`

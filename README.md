@@ -123,6 +123,32 @@ It does the following:
 - restores CustomNPCs mark rendering above NPCs that use a Gecko model
 - restores vanilla armor rendering for humanoid CNPC-Gecko models
 
+## Changement Brover
+
+Depuis le clone de reference `origin/neoforge-1-21-1`, les commits Brover ajoutent les changements suivants, regroupes par theme :
+
+- dimensions et hitbox des NPC :
+  - conversion de la taille des NPC en valeur flottante pour permettre des tailles plus fines
+  - ajustement des dimensions et hitbox vanilla et Gecko afin que le rendu, la collision et les controles d'edition restent coherents
+  - ajout de valeurs de dimensions par defaut pour les donnees de modeles Gecko
+- nametags, marques et disponibilite :
+  - rendu des nametags plus stable, avec opacite ajustee, gestion de profondeur et limitation du fond modifie aux environnements Iris/Oculus
+  - marques orientees face au joueur, avec position adaptee selon la presence du nom et du titre
+  - taille du nom, du titre et de la marque synchronisee avec la taille du NPC, plus controle d'offset vertical dans l'interface
+  - ajout d'un troisieme slot d'availability scoreboard pour les NPC
+- compatibilite CNPC-Gecko-Addon :
+  - restauration de l'overlay de texture sur les modeles Gecko
+  - rendu des objets tenus en version Third Person, avec support main gauche/main droite et positionnement plus permissif via les locators
+  - preview Gecko en vue 3/4 face dans l'interface CustomNPCs
+  - correction du mouvement de tete des modeles Gecko quand le bone de tete est enfant d'un body ou d'une chaine de bones inclinee
+- animations Gecko et dialogues :
+  - correction de `thenWait(int)` afin que la duree d'attente soit bien transmise
+  - nouveau pipeline pour jouer correctement les suites d'animations manuelles multi-etapes
+  - retour propre a l'animation idle, y compris quand une sequence manuelle se termine pendant un dialogue
+  - ajout de transitions d'animations configurables et d'un idle force pendant les dialogues `stopAndInteract`
+  - ajout des commandes script `setDialogLookAt(...)`, `clearDialogLookAt(...)` et `stopManualAnimation(...)`
+  - focus de dialogue gere localement cote client, avec reprise de routine seulement a la fin du dialogue
+
 ## What This Compat Does Not Change
 
 This mod does not change scoreboard semantics.

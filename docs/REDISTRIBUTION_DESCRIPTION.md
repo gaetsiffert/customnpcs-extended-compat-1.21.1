@@ -44,6 +44,17 @@ It also includes optional CNPC-Gecko-Addon compatibility fixes. When CNPC-Gecko-
 
 It also fixes two CustomNPCs scoreboard scripting API issues on the affected build: scripts can safely set scores for offline or fake scoreboard names, and `deletePlayerScore(...)` now deletes the score instead of removing the player from their scoreboard team.
 
+## Changement Brover
+
+Depuis le clone de reference `origin/neoforge-1-21-1`, les changements Brover etendent surtout les gros setups CustomNPCs utilisant des tailles personnalisees, des nametags complexes, des modeles Gecko et des dialogues scripts.
+
+Par theme :
+
+- dimensions et hitbox : taille de NPC plus precise, dimensions vanilla/Gecko mieux synchronisees, hitbox ajustees et options d'edition plus coherentes
+- nametags et marques : rendu plus lisible, gestion de profondeur, compatibilite Iris/Oculus, marques qui font face au joueur, position adaptee au nom/titre, offset vertical configurable et troisieme slot d'availability scoreboard
+- CNPC-Gecko-Addon : overlay de texture restaure, objets tenus rendus comme en Third Person, support main gauche/main droite, positionnement d'objets plus permissif, preview 3/4 face et correction du regard sur les modeles dont la tete depend d'une chaine de bones inclinee
+- animations et dialogues : `thenWait(int)` corrige, sequences d'animations manuelles multi-etapes fiabilisees, retour a l'idle apres sequence manuelle meme pendant un dialogue, idle de dialogue force pendant `stopAndInteract`, et nouvelles commandes script de focus ou d'arret d'animation
+
 ## Installation
 
 ### Dedicated server
