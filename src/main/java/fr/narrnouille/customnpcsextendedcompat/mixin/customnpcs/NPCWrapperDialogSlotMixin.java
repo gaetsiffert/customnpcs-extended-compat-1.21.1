@@ -1,7 +1,10 @@
 package fr.narrnouille.customnpcsextendedcompat.mixin.customnpcs;
 
 import fr.narrnouille.customnpcsextendedcompat.CustomNpcDialogSlots;
+import fr.narrnouille.customnpcsextendedcompat.DialogInteractionTracker;
+import fr.narrnouille.customnpcsextendedcompat.GeckoManualAnimationController;
 import noppes.npcs.api.CustomNPCsException;
+import noppes.npcs.api.entity.IPlayer;
 import noppes.npcs.api.handler.data.IDialog;
 import noppes.npcs.api.wrapper.EntityLivingWrapper;
 import noppes.npcs.api.wrapper.NPCWrapper;
@@ -47,6 +50,30 @@ public abstract class NPCWrapperDialogSlotMixin<T extends EntityNPCInterface> ex
             return null;
         }
         return option.getDialog();
+    }
+
+    public void setDialogLookAt(IPlayer<?> player, double x, double y, double z) {
+        DialogInteractionTracker.setManualLookAt((EntityNPCInterface) this.entity, player, x, y, z);
+    }
+
+    public void setDialogLookAt(IPlayer<?> player, double x, double y, double z, float speed) {
+        DialogInteractionTracker.setManualLookAt((EntityNPCInterface) this.entity, player, x, y, z, speed);
+    }
+
+    public void setDialogLookAt(IPlayer<?> player, double x, double y, double z, double speed) {
+        DialogInteractionTracker.setManualLookAt((EntityNPCInterface) this.entity, player, x, y, z, (float) speed);
+    }
+
+    public void clearDialogLookAt(IPlayer<?> player) {
+        DialogInteractionTracker.clearManualLookAt((EntityNPCInterface) this.entity, player);
+    }
+
+    public void stopManualAnimation() {
+        GeckoManualAnimationController.stopManualAnimation((EntityNPCInterface) this.entity);
+    }
+
+    public void stopManualAnimation(IPlayer<?> player) {
+        GeckoManualAnimationController.stopManualAnimation((EntityNPCInterface) this.entity, player);
     }
 
     @Unique
