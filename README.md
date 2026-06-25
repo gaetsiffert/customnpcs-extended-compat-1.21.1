@@ -264,6 +264,8 @@ In short: if the compat is removed but the scoreboard-driven NPC setup remains, 
 - `docs/changelogs/CHANGELOG_1.0.5.md`
   - previous release notes
 - `docs/changelogs/CHANGELOG_1.0.6.md`
+  - previous release notes
+- `docs/changelogs/CHANGELOG_1.0.7.md`
   - current release notes
 
 ## Useful Commands
